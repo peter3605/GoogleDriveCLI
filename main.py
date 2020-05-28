@@ -2,7 +2,7 @@ from drive_commands import DriveObj
 import error_messages as error
 import welcome_message as welcome
 
-options = ["login","exit", "print"]
+options = ["login","exit", "file-names", "help"]
 
 # represents a connection to google drive
 drive = None
@@ -46,11 +46,15 @@ def run_command(args):
             logged_in = True
         except:
             error.print_login_error()
-    elif main_command == 'print' and size == 1:
+    elif main_command == 'file-names' and size == 1:
         if logged_in:
             drive.print_n_filenames()
         else:
             error.print_not_logged_in_error()
+    elif main_command == "help":
+        print("Possible Commands:")
+        for command in options:
+            print(command)
     else:
         error.print_invalid_command()
 
