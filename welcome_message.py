@@ -1,11 +1,9 @@
 def display():
     f = open('welcome.txt', 'r')
-    for i in range(0,6):
-        line = f.readline().strip()
-        if i == 0 or i == 5:
-            line = " " + line
+    for i in range(0,22):
+        line = f.readline().rstrip()
         print(line)
 
-    print('                 ----------------------------')
-    print('                 | TO THE GOOGLE DRIVE CLI! |')
-    print('                 ----------------------------')
+    print('              -------------------------------------------')
+    print('              | COMMAND LINE INTERFACE FOR GOOGLE DRIVE |')
+    print('              -------------------------------------------')
