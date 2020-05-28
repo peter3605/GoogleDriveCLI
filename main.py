@@ -1,5 +1,6 @@
 from drive_commands import DriveObj
 import error_messages as error
+import welcome_message as welcome
 
 options = ["login","exit", "print"]
 
@@ -57,6 +58,9 @@ def run_command(args):
 Start the CLI
 """
 def main():
+    # print the welcome message
+    welcome.display()
+
     # create a drive object
     global drive 
     drive = DriveObj()
