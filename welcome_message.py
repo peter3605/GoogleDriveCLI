@@ -6,6 +6,6 @@ def display():
             line = " " + line
         print(line)
 
-    print(' --------------------------')
-    print('| TO THE GOOGLE DRIVE CLI! |')
-    print(' --------------------------')
+    print('                 ----------------------------')
+    print('                 | TO THE GOOGLE DRIVE CLI! |')
+    print('                 ----------------------------')
