@@ -38,7 +38,10 @@ class DriveObj:
         self.service = build('drive', 'v3', credentials=self.creds)
         print("Login was a success")
     
-    def print_n_filenames(self, n=10):
+    def print_n_filenames(self, args):
+        n = 10
+        if '-n' in args.keys():
+            n = args['-n']
         results = self.service.files().list(
         pageSize=n, fields="nextPageToken, files(id, name)").execute()
         items = results.get('files', [])

@@ -58,21 +58,30 @@ def run_command(args):
     # check the main command
     if main_command == 'exit':
         exit()
-    elif main_command == 'login' and size == 1:
+    elif main_command == 'login' and check_size(args, 1):
         try:
             drive.login()
             logged_in = True
         except:
             error.print_login_error()
-    elif main_command == 'file-names' and size == 1:
+    elif main_command == 'filenames' and check_size(args, 1, 2):
         if logged_in:
-            drive.print_n_filenames()
+            drive.print_n_filenames(args)
         else:
             error.print_not_logged_in_error()
-    elif main_command == "help" and size == 1:
+    elif main_command == "help" and check_size(args, 1):
         commands.print_commands()
     else:
         error.print_invalid_command()
+
+"""
+Checks the size of args
+"""
+def check_size(args, *nums):
+    for num in nums:
+        if len(args) == num:
+            return True
+    return False
 
 """
 Start the CLI
