@@ -2,32 +2,51 @@ from drive import DriveObj
 import error_messages as error
 import welcome_message as welcome
 import commands
+import re
 
 # represents a connection to google drive
 drive = None
 logged_in = False
 
 """
-Parse the command
+Parses the user input - splits into the main command and the flags/arguments
+    Params: command - passed from the main method, contains the raw input string from command line
+    Returns: result - a dictionary containing the command and arguments
 """
 def parse_command(command):
-    # split the command by whitespace
-    split = command.split()
+    # what is returned
+    result = {}
 
-    # if the string was empty or too small, print invalid command and return none
-    if split is None or len(split) < 1 or split[0] is None:
-        error.print_invalid_command()
-        return None
-    
-    # get the main command - should be the first word
-    args = {'main':split[0]}
+    # regex strings
+    input_pattern = '^([a-z]+)( -[a-z]* \S*)*$'
+    main_pattern = '^([a-z]+)'
+    args_pattern = '( -[a-z]* \S*)'
 
-    # need to parse for flags and other stuff
+    # check the command for regex match
+    match = re.search(input_pattern, command)
 
-    return args
+    # if it does not match, return None
+    if match is None:
+        result = None
+    else:
+        # otherwise, find the groups
+        main = re.search(main_pattern, command).group(0)
+        args = [x.group() for x in re.finditer(args_pattern, command)]
+
+        # add the main command to dictionary
+        result['main'] = main
+        
+        # split the args and put into result
+        for arg in args:
+            split = arg.split()
+            result[split[0]] = split[1]
+
+    return result
 
 """
-Validate and run the command
+Validate and run the command - checks if the main command is a valid one
+    Params: args - the dictionary of commands/arguments from the parse_command method
+    Returns: nothing
 """
 def run_command(args):
     # variables that will be used
@@ -50,7 +69,7 @@ def run_command(args):
             drive.print_n_filenames()
         else:
             error.print_not_logged_in_error()
-    elif main_command == "help":
+    elif main_command == "help" and size == 1:
         commands.print_commands()
     else:
         error.print_invalid_command()
@@ -72,6 +91,8 @@ def main():
         args = parse_command(command)
         if args is not None:
             run_command(args)
+        else:
+            error.print_invalid_command()
 
 
 if __name__ == '__main__':
