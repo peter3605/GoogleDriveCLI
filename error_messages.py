@@ -2,7 +2,7 @@
 Prints an invalid command error message
 """
 def print_invalid_command():
-    print('ERROR - Invalid command. Please re-enter using the correct guidelines')
+    print('ERROR - Invalid command. Type "help" for more info on commands.')
 
 """
 Prints a login error message
