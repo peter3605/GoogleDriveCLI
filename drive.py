@@ -12,11 +12,12 @@ class DriveObj:
     def __init__(self):
         self.creds = None
         self.service = None
+        self.current_folder = None
 
+    """
+    Logs into to the user's account using the key stored in credentials.json
+    """
     def login(self):
-        """Shows basic usage of the Drive v3 API.
-        Prints the names and ids of the first 10 files the user has access to.
-        """
         # The file token.pickle stores the user's access and refresh tokens, and is
         # created automatically when the authorization flow completes for the first
         # time.
@@ -36,9 +37,12 @@ class DriveObj:
                 pickle.dump(self.creds, token)
 
         self.service = build('drive', 'v3', credentials=self.creds)
-        print("Login was a success")
+        print("Login was a success - current folder is: " )
     
-    def print_n_filenames(self, args):
+    """
+    Prints the names of files in the current directory
+    """
+    def view_filenames(self, args):
         n = 10
         if '-n' in args.keys():
             n = args['-n']
@@ -51,7 +55,17 @@ class DriveObj:
         else:
             print('Files:')
             for item in items:
-                print(u'{0} ({1})'.format(item['name'], item['id']))
+                print(item['name'])
 
-
-
+    """
+    Prints the names of folders in the current directory
+    """
+    def view_foldernames(self):
+        results = self.service.files().list(q="mimeType='application/vnd.google-apps.folder'", fields="nextPageToken, files(id, name)", pageSize=10).execute()
+        items = results.get('files', [])
+        if not items:
+            print('No folders found.')
+        else:
+            print('Folders:')
+            for item in items:
+                print(item['name'])
