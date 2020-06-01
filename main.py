@@ -66,7 +66,12 @@ def run_command(args):
             error.print_login_error()
     elif main_command == 'filenames' and check_size(args, 1, 2):
         if logged_in:
-            drive.print_n_filenames(args)
+            drive.view_filenames(args)
+        else:
+            error.print_not_logged_in_error()
+    elif main_command == 'foldernames' and check_size(args, 1, 2):
+        if logged_in:
+            drive.view_foldernames()
         else:
             error.print_not_logged_in_error()
     elif main_command == "help" and check_size(args, 1):

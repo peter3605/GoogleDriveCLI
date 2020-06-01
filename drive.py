@@ -37,6 +37,7 @@ class DriveObj:
                 pickle.dump(self.creds, token)
 
         self.service = build('drive', 'v3', credentials=self.creds)
+        self.current_folder = 'root'
         print("Login was a success - current folder is: " )
     
     """
@@ -46,7 +47,7 @@ class DriveObj:
         n = 10
         if '-n' in args.keys():
             n = args['-n']
-        results = self.service.files().list(
+        results = self.service.files().list(q=f"'{self.current_folder}' in parents",
         pageSize=n, fields="nextPageToken, files(id, name)").execute()
         items = results.get('files', [])
 
@@ -61,7 +62,7 @@ class DriveObj:
     Prints the names of folders in the current directory
     """
     def view_foldernames(self):
-        results = self.service.files().list(q="mimeType='application/vnd.google-apps.folder'", fields="nextPageToken, files(id, name)", pageSize=10).execute()
+        results = self.service.files().list(q="mimeType='application/vnd.google-apps.folder'", fields="files(id, name)", pageSize=10).execute()
         items = results.get('files', [])
         if not items:
             print('No folders found.')
