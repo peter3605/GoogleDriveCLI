@@ -74,6 +74,11 @@ def run_command(args):
             drive.view_foldernames()
         else:
             error.print_not_logged_in_error()
+    elif main_command == 'cd' and check_size(args, 1, 2):
+        if logged_in:
+            drive.change_directory(args)
+        else:
+            error.print_not_logged_in_error()
     elif main_command == "help" and check_size(args, 1):
         commands.print_commands()
     else:

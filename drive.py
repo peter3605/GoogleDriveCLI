@@ -70,3 +70,13 @@ class DriveObj:
             print('Folders:')
             for item in items:
                 print(item['name'])
+
+    """
+    Changes directory into specified folder
+    """
+    def change_directory(self, args):
+        if args is None or '-f' not in args:
+            self.current_folder = 'root'
+        else:
+            self.current_folder = args['-f']
+        
